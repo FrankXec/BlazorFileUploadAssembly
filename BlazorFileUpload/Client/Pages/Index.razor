@@ -10,26 +10,9 @@
 
 <InputFile OnChange="@OnInputFileChange" multiple />
 
-@if (fileNames.Count > 0)
-{
-    <ul>
-        @foreach (var fileName in fileNames)
-        {
-            <li>
-                File: @fileName
-                <br>
-                <span>
-                    Stored File Name: @GetStoredFileName(fileName)
-                </span>
-                <button @onclick="@(() => DownloadFile(GetStoredFileName(fileName), fileName))">Download file</button>
-            </li>
-        }
-    </ul>
-}
-
 @code {
-    private int maxAllowedFiles = int.MaxValue;
-    private long maxFileSize = long.MaxValue;
+    private int maxAllowedFiles = 1;
+    private long maxFileSize = 1024 * 1024 * 10;//MB
     private List<string> fileNames = new();
     private List<UploadResult> uploadResults = new();
 
@@ -51,15 +34,15 @@
         }
 
         var response = await Http.PostAsync("/api/File", content);
-        var newUploadResults = await response.Content.ReadFromJsonAsync<List<UploadResult>>();
-
+        /*var newUploadResults = await response.Content.ReadFromJsonAsync<List<UploadResult>>();
+         * 
         if(newUploadResults is not null)
         {
             uploadResults = uploadResults.Concat(newUploadResults).ToList();
-        }
+        }*/
     }
 
-    private string? GetStoredFileName(string fileName)
+    /*private string? GetStoredFileName(string fileName)
     {
         var uploadResult = uploadResults.SingleOrDefault(f => f.FileName == fileName);
         if (uploadResult is not null)
@@ -82,5 +65,5 @@
             using var streamRef = new DotNetStreamReference(stream: fileStream);
             await JS.InvokeVoidAsync("downloadFileFromStream", originalFileName, streamRef);
         }
-    }
+    }*/
 }

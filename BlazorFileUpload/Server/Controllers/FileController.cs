@@ -1,9 +1,9 @@
-﻿using BlazorFileUpload.Server.Data;
+﻿//using BlazorFileUpload.Server.Data;
 using BlazorFileUpload.Shared;
-using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
+//using Microsoft.EntityFrameworkCore;
+//using System.Net;
 
 namespace BlazorFileUpload.Server.Controllers
 {
@@ -12,15 +12,15 @@ namespace BlazorFileUpload.Server.Controllers
     public class FileController : ControllerBase
     {
         private readonly IWebHostEnvironment _env;
-        private readonly DataContext _context;
+        //private readonly DataContext _context;
 
-        public FileController(IWebHostEnvironment env, DataContext context)
+        public FileController(IWebHostEnvironment env/*, /*DataContext context*/)
         {
             _env = env;
-            _context = context;
+            //_context = context;
         }
 
-        [HttpGet("{fileName}")]
+        /*[HttpGet("{fileName}")]
         public async Task<IActionResult> DownloadFile(string fileName)
         {
             var uploadResult = await _context.Uploads.FirstOrDefaultAsync(u => u.StoredFileName.Equals(fileName));
@@ -34,7 +34,7 @@ namespace BlazorFileUpload.Server.Controllers
             }
             memory.Position = 0;
             return File(memory, uploadResult.ContentType, Path.GetFileName(path));
-        }
+        }*/
 
         [HttpPost]
         public async Task<ActionResult<List<UploadResult>>> UploadFile(List<IFormFile> files)
@@ -59,10 +59,10 @@ namespace BlazorFileUpload.Server.Controllers
                 uploadResult.ContentType = file.ContentType;
                 uploadResults.Add(uploadResult);
 
-                _context.Uploads.Add(uploadResult);
+                //_context.Uploads.Add(uploadResult);
             }
 
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
             return Ok(uploadResults);
         }
